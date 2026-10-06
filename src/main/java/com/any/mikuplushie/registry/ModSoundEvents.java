@@ -1,12 +1,12 @@
 package com.any.mikuplushie.registry;
 
 import com.any.mikuplushie.MikuPlushie;
-import com.any.mikuplushie.entity.KonohaEntity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.sound.SoundEvent;
-import net.minecraft.util.Identifier;
+import com.any.mikuplushie.util.ModUtil;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.Identifier;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.entity.EntityType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,8 +20,8 @@ public class ModSoundEvents {
 	protected static List<String> MIKU_SOUND_EVENT = List.of("canudinho", "eat");
 
 	private static SoundEvent registerSound(String id) {
-		Identifier identifier = Identifier.of(MikuPlushie.MOD_ID, id);
-		return Registry.register(Registries.SOUND_EVENT, identifier, SoundEvent.of(identifier));
+		Identifier identifier = MikuPlushie.id(id);
+		return Registry.register(BuiltInRegistries.SOUND_EVENT, identifier, SoundEvent.createVariableRangeEvent(identifier));
 	}
 
 	public static void initialize() {
@@ -32,18 +32,19 @@ public class ModSoundEvents {
 
 			//SKIP KONOHA PLUSH
 			if (!plush.equals(ModEntities.KONOHA)){
+				String plushName = ModUtil.getEntityId(plush).replace("_plush", "");
 
 				//ADD MIKU SOUND EVENTS
 				if (plush.equals(ModEntities.MIKU)){
 					for (String mikuSoundEvent : MIKU_SOUND_EVENT){
-						SoundEvent soundEvent = registerSound(plush.getUntranslatedName().replace("_plush", "") + "_" + mikuSoundEvent);
+						SoundEvent soundEvent = registerSound(plushName + "_" + mikuSoundEvent);
 						MIKU_PLUSHIES_SOUND_EVENTS.add(soundEvent);
 					}
 				}
 
 				//ADD REGULAR SOUND EVENTS
 				for (String event : SOUND_EVENT){
-					SoundEvent soundEvent = registerSound(plush.getUntranslatedName().replace("_plush", "") + "_" + event);
+					SoundEvent soundEvent = registerSound(plushName + "_" + event);
 					MIKU_PLUSHIES_SOUND_EVENTS.add(soundEvent);
 				}
 			}

@@ -1,99 +1,76 @@
 package com.any.mikuplushie.entity.client.render;
 
 import com.any.mikuplushie.entity.AbstractPlushEntity;
-import com.any.mikuplushie.entity.TetoEntity;
 import com.any.mikuplushie.entity.client.model.AbstractPlushModel;
+import com.any.mikuplushie.entity.client.model.animations.PlushAnimations;
 import com.any.mikuplushie.registry.ModBlocks;
 import com.any.mikuplushie.util.ModUtil;
-import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.VertexConsumer;
-import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.render.entity.EntityRendererFactory;
-import net.minecraft.client.render.model.json.ModelTransformationMode;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ShieldItem;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.RotationAxis;
-import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib.cache.object.BakedGeoModel;
-import software.bernie.geckolib.cache.object.GeoBone;
-import software.bernie.geckolib.renderer.GeoEntityRenderer;
-import software.bernie.geckolib.renderer.layer.BlockAndItemGeoLayer;
+import com.geckolib.constant.dataticket.DataTicket;
+import com.geckolib.renderer.GeoEntityRenderer;
+import com.geckolib.renderer.base.BoneSnapshots;
+import com.geckolib.renderer.base.RenderPassInfo;
+import com.geckolib.renderer.layer.builtin.ItemInHandGeoLayer;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
+import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
+import net.minecraft.resources.Identifier;
+import org.jspecify.annotations.Nullable;
 
-public class AbstractPlushRender extends GeoEntityRenderer<AbstractPlushEntity> {
+/**
+ * GeckoLib 5 renders from a render state instead of the entity itself.
+ * Everything the model, the texture and the procedural animations need is captured in {@link #addRenderData}.
+ */
+public class AbstractPlushRender extends GeoEntityRenderer<AbstractPlushEntity, LivingEntityRenderState> {
 
     public static final String LEFT_HAND = "left_hand";
     public static final String RIGHT_HAND = "right_hand";
 
-    protected ItemStack mainHandItem;
-    protected ItemStack offHandItem;
+    //RENDER STATE DATA
+    public static final DataTicket<String> PLUSH_NAME = DataTicket.create("miku_plushie_plush_name", String.class);
+    public static final DataTicket<String> VARIANT = DataTicket.create("miku_plushie_variant", String.class);
+    public static final DataTicket<Float> HEALTH_FACTOR = DataTicket.create("miku_plushie_health_factor", Float.class);
+    public static final DataTicket<Boolean> SONG_PLAYING = DataTicket.create("miku_plushie_song_playing", Boolean.class);
 
-    public AbstractPlushRender(EntityRendererFactory.Context renderManager) {
-        super(renderManager, new AbstractPlushModel());
+    public AbstractPlushRender(EntityRendererProvider.Context context) {
+        super(context, new AbstractPlushModel());
 
-        // Add some held item rendering
-        addRenderLayer(new BlockAndItemGeoLayer<>(this) {
-            @Nullable
-            public ItemStack getStackForBone(GeoBone bone, AbstractPlushEntity animatable) {
-                // Retrieve the items in the entity's hands for the relevant bone
-                return switch (bone.getName()) {
-                    case LEFT_HAND -> animatable.isLeftHanded() ?
-                        AbstractPlushRender.this.mainHandItem : AbstractPlushRender.this.offHandItem;
-                    case RIGHT_HAND -> animatable.isLeftHanded() ?
-                        AbstractPlushRender.this.offHandItem : AbstractPlushRender.this.mainHandItem;
-                    default -> null;
-                };
-            }
-
-            public ModelTransformationMode getTransformTypeForStack(GeoBone bone, ItemStack stack, AbstractPlushEntity animatable) {
-                // Apply the camera transform for the given hand
-                return switch (bone.getName()) {
-                    case LEFT_HAND, RIGHT_HAND -> ModelTransformationMode.THIRD_PERSON_RIGHT_HAND;
-                    default -> ModelTransformationMode.NONE;
-                };
-            }
-
-            // Do some quick render modifications depending on what the item is
-            public void renderStackForBone(MatrixStack poseStack, GeoBone bone, ItemStack stack, AbstractPlushEntity animatable,
-                                            VertexConsumerProvider bufferSource, float partialTick, int packedLight, int packedOverlay) {
-                if (stack == AbstractPlushRender.this.mainHandItem) {
-                    poseStack.multiply(RotationAxis.POSITIVE_X.rotationDegrees(-90f));
-
-                    if (stack.getItem() instanceof ShieldItem)
-                        poseStack.translate(0, 0.125, -0.25);
-                }
-                else if (stack == AbstractPlushRender.this.offHandItem) {
-                    poseStack.multiply(RotationAxis.POSITIVE_X.rotationDegrees(-90f));
-
-                    if (stack.getItem() instanceof ShieldItem) {
-                        poseStack.translate(0, 0.125, 0.25);
-                        poseStack.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(180));
-                    }
-                }
-
-                super.renderStackForBone(poseStack, bone, stack, animatable, bufferSource, partialTick, packedLight, packedOverlay);
-            }
-        });
+        // Add held item rendering, the plush models use their own hand bone names
+        withRenderLayer(new ItemInHandGeoLayer<>(context, this, RIGHT_HAND, LEFT_HAND));
     }
 
     @Override
-    public RenderLayer getRenderType(AbstractPlushEntity animatable, Identifier texture, VertexConsumerProvider bufferSource, float partialTick) {
+    public void addRenderData(AbstractPlushEntity animatable, @Nullable Void relatedObject, LivingEntityRenderState renderState, float partialTick) {
+        renderState.addGeckolibData(PLUSH_NAME, animatable.getPlushName());
+        renderState.addGeckolibData(VARIANT, animatable.getVariant());
+        renderState.addGeckolibData(HEALTH_FACTOR, animatable.getHealth() / animatable.getMaxHealth());
+        renderState.addGeckolibData(SONG_PLAYING, animatable.isSongPlaying());
+    }
+
+    @Override
+    public @Nullable RenderType getRenderType(LivingEntityRenderState renderState, Identifier texture) {
+        String variant = renderState.getOrDefaultGeckolibData(VARIANT, "");
+
         //USE TRANSLUCENT RENDER ON SPECIFIC VARIATION
         if (
-            animatable.getVariant().equals(ModUtil.getBlockIdFromBlock(ModBlocks.MIKU_PLUSH_GHOST)) ||
-            animatable.getVariant().equals(ModUtil.getBlockIdFromBlock(ModBlocks.TETO_PLUSH_WHATCHACALLITSNAME))
+            variant.equals(ModUtil.getBlockIdFromBlock(ModBlocks.MIKU_PLUSH_GHOST)) ||
+            variant.equals(ModUtil.getBlockIdFromBlock(ModBlocks.TETO_PLUSH_WHATCHACALLITSNAME))
         ){
-            return RenderLayer.getEntityTranslucent(texture);
+            return RenderTypes.entityTranslucent(texture);
         } else {
-            return super.getRenderType(animatable, texture, bufferSource, partialTick);
+            return super.getRenderType(renderState, texture);
         }
     }
 
+    //PROCEDURAL ANIMATIONS (WAS GeoModel#setCustomAnimations IN GECKOLIB 4)
     @Override
-    public void preRender(MatrixStack poseStack, AbstractPlushEntity animatable, BakedGeoModel model, @Nullable VertexConsumerProvider bufferSource, @Nullable VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, int colour) {
-        super.preRender(poseStack, animatable, model, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, colour);
-        this.mainHandItem = animatable.getMainHandStack();
-        this.offHandItem = animatable.getOffHandStack();
+    public void adjustModelBonesForRender(RenderPassInfo<LivingEntityRenderState> renderPassInfo, BoneSnapshots snapshots) {
+        LivingEntityRenderState renderState = renderPassInfo.renderState();
+        String plushName = renderState.getOrDefaultGeckolibData(PLUSH_NAME, "");
+
+        if (plushName.contains("miku") || plushName.contains("teto") || plushName.contains("neru")) {
+            PlushAnimations.hairMovement(snapshots, renderState);
+        }
+        PlushAnimations.limbAnimations(snapshots, renderState);
     }
 }

@@ -2,10 +2,9 @@ package com.any.mikuplushie.registry;
 
 import com.any.mikuplushie.MikuPlushie;
 import net.fabricmc.fabric.api.particle.v1.FabricParticleTypes;
-import net.minecraft.particle.SimpleParticleType;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.util.Identifier;
+import net.minecraft.core.Registry;
+import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.core.registries.BuiltInRegistries;
 
 public class ModParticles {
 
@@ -15,7 +14,7 @@ public class ModParticles {
 
         MikuPlushie.LOGGER.info("Registering " + MikuPlushie.MOD_ID + " Particles");
 
-        Registry.register(Registries.PARTICLE_TYPE, Identifier.of(MikuPlushie.MOD_ID, "miku_spawn"), MIKU_SPAWN);
+        Registry.register(BuiltInRegistries.PARTICLE_TYPE, MikuPlushie.id("miku_spawn"), MIKU_SPAWN);
 
     }
 }

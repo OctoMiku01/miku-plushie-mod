@@ -4,20 +4,20 @@ import com.any.mikuplushie.MikuPlushie;
 import com.any.mikuplushie.block.LeekCropBlock;
 import com.any.mikuplushie.block.MikuPlushieBlock;
 import com.any.mikuplushie.block.WildLeekCropBlock;
-import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.sound.BlockSoundGroup;
-import net.minecraft.util.Identifier;
-import org.jetbrains.annotations.Nullable;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import org.jspecify.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Function;
 
 public class ModBlocks {
 
@@ -59,7 +59,7 @@ public class ModBlocks {
 	public static final Block MIKU_PLUSH_GHOSTFACE = registerPlush("miku_plush_ghostface", null);
 	public static final Block MIKU_PLUSH_FRANKENSTEIN = registerPlush("miku_plush_frankenstein", null);
 	public static final Block MIKU_PLUSH_MUMMY = registerPlush("miku_plush_mummy", null);
-	public static final Block MIKU_PLUSH_GHOST = registerPlush("miku_plush_ghost", BlockSoundGroup.GLASS);
+	public static final Block MIKU_PLUSH_GHOST = registerPlush("miku_plush_ghost", SoundType.GLASS);
 	public static final Block MIKU_PLUSH_PATATI = registerPlush("miku_plush_patati", null);
 	public static final Block MIKU_PLUSH_PATATA = registerPlush("miku_plush_patata", null);
 	public static final Block MIKU_PLUSH_DEVIL = registerPlush("miku_plush_devil", null);
@@ -123,50 +123,45 @@ public class ModBlocks {
 	public static final Block KAITO_PLUSH_V4 = registerPlush("kaito_plush_v4", null);
 
     //NON PLUSH STUFF
-    public static final LeekCropBlock LEEK_CROP = (LeekCropBlock) register(
-        new LeekCropBlock(AbstractBlock.Settings.create()
-            .nonOpaque().noCollision().ticksRandomly().breakInstantly().sounds(BlockSoundGroup.CROP)),
+    public static final LeekCropBlock LEEK_CROP = register(
         "leek_crop",
-        false
+        LeekCropBlock::new,
+        BlockBehaviour.Properties.of()
+            .noOcclusion().noCollision().randomTicks().instabreak().sound(SoundType.CROP)
     );
-    public static final WildLeekCropBlock WILD_LEEK_CROP = (WildLeekCropBlock) register(
-        new WildLeekCropBlock(AbstractBlock.Settings.create()
-            .nonOpaque().noCollision().ticksRandomly().breakInstantly().sounds(BlockSoundGroup.CROP)),
+    public static final WildLeekCropBlock WILD_LEEK_CROP = register(
         "wild_leek_crop",
-        false
+        WildLeekCropBlock::new,
+        BlockBehaviour.Properties.of()
+            .noOcclusion().noCollision().randomTicks().instabreak().sound(SoundType.CROP)
     );
 
     //REGISTER PLUSHIES
-    public static Block registerPlush(String name, @Nullable BlockSoundGroup blockSound) {
+    public static Block registerPlush(String name, @Nullable SoundType blockSound) {
         //IF THE BLOCK SOUND IS NULL SET TO WOOL
-        BlockSoundGroup blockSoundGroup = null;
-        blockSoundGroup = Objects.requireNonNullElse(blockSound, BlockSoundGroup.WOOL);
+        SoundType soundType = Objects.requireNonNullElse(blockSound, SoundType.WOOL);
         //REGISTER BLOCK NORMALLY
         return register(
-            new MikuPlushieBlock(AbstractBlock.Settings.copy(Blocks.FLOWER_POT)
-                .sounds(blockSoundGroup).nonOpaque()), name, false);
+            name,
+            MikuPlushieBlock::new,
+            BlockBehaviour.Properties.ofFullCopy(Blocks.FLOWER_POT).sound(soundType).noOcclusion()
+        );
     }
 
-    //REGISTER REGULAR BLOCKS
-	public static Block register(Block block, String name, boolean shouldRegisterItem) {
-        //CREATE IDENTIFIER
-        Identifier id = Identifier.of(MikuPlushie.MOD_ID, name);
+    //REGISTER REGULAR BLOCKS (ITEMS ARE REGISTERED IN ModItems)
+    public static <T extends Block> T register(String name, Function<BlockBehaviour.Properties, T> blockFactory, BlockBehaviour.Properties properties) {
+        //CREATE THE REGISTRY KEY, BLOCK PROPERTIES NEED IT SINCE 1.21.2
+        ResourceKey<Block> key = ResourceKey.create(Registries.BLOCK, MikuPlushie.id(name));
 
-        //REGISTER ITEM IF REQUESTED
-        if (shouldRegisterItem) {
-            BlockItem blockItem = new BlockItem(block, new Item.Settings());
-            Registry.register(Registries.ITEM, id, blockItem);
-        }
-
-        Block blockRegister = Registry.register(Registries.BLOCK, id, block);
+        T block = Registry.register(BuiltInRegistries.BLOCK, key, blockFactory.apply(properties.setId(key)));
 
         //IF BLOCK IS A PLUSH ADD IT TO THE LIST
         if (block instanceof MikuPlushieBlock){
             PLUSH_BLOCKS.add(block);
         }
 
-        return blockRegister;
-	}
+        return block;
+    }
 
 	public static void initialize() {
         MikuPlushie.LOGGER.info("Registering " + MikuPlushie.MOD_ID + " Blocks");

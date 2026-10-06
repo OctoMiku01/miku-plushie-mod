@@ -3,15 +3,12 @@ package com.any.mikuplushie.registry;
 import com.any.mikuplushie.MikuPlushie;
 import com.any.mikuplushie.entity.*;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
-import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityDimensions;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.SpawnGroup;
-import net.minecraft.entity.mob.MobEntity;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.util.Identifier;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobCategory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,16 +34,15 @@ public class ModEntities {
     public static final EntityType<KaitoEntity> KAITO = registerMob("kaito_plush", KaitoEntity::new);
 
 
-    private static <T extends Entity> EntityType<T> registerMob(String name, EntityType.EntityFactory<T> entity) {
-        EntityType<T> entityType = Registry.register(Registries.ENTITY_TYPE,
-            Identifier.of(MikuPlushie.MOD_ID, name),
-            EntityType.Builder.create(entity, SpawnGroup.CREATURE)
-                .dimensions(PLUSH_WIDTH, PLUSH_HEIGHT)
+    private static <T extends AbstractPlushEntity> EntityType<T> registerMob(String name, EntityType.EntityFactory<T> entity) {
+        ResourceKey<EntityType<?>> key = ResourceKey.create(Registries.ENTITY_TYPE, MikuPlushie.id(name));
+        EntityType<T> entityType = Registry.register(BuiltInRegistries.ENTITY_TYPE, key,
+            EntityType.Builder.of(entity, MobCategory.CREATURE)
+                .sized(PLUSH_WIDTH, PLUSH_HEIGHT)
                 .eyeHeight(0.85F)
-                .build(name)
+                .build(key)
         );
-        //noinspection unchecked
-        PLUSH_ENTITIES.add((EntityType<? extends AbstractPlushEntity>) entityType);
+        PLUSH_ENTITIES.add(entityType);
         return entityType;
     }
 

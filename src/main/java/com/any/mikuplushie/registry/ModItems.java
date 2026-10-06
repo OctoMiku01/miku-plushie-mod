@@ -5,19 +5,28 @@ import com.any.mikuplushie.item.MikuPlushieBlockItem;
 import com.any.mikuplushie.item.ModFoodComponents;
 import com.any.mikuplushie.item.PlushToolMaterial;
 import com.any.mikuplushie.util.ModUtil;
-import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
-import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
-import net.minecraft.block.Block;
-import net.minecraft.item.*;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.Rarity;
+import net.fabricmc.fabric.api.creativetab.v1.FabricCreativeModeTab;
+import net.minecraft.core.Holder;
+import net.minecraft.core.Registry;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.equipment.Equippable;
+import net.minecraft.world.level.block.Block;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 public class ModItems {
 
@@ -25,32 +34,37 @@ public class ModItems {
     public static List<Item> PLUSH_ITEMS = new ArrayList<>();
     public static List<Item> PICKAXE_ITEMS = new ArrayList<>();
 
-    //CREATE ITEM GROUP
-	public static final RegistryKey<ItemGroup> MIKU_GROUP_KEY =
-        RegistryKey.of(Registries.ITEM_GROUP.getKey(),Identifier.of(MikuPlushie.MOD_ID, "item_group")
-	);
-	public static final ItemGroup MIKU_GROUP = FabricItemGroup.builder()
+    //CREATE CREATIVE TAB
+	public static final ResourceKey<CreativeModeTab> MIKU_GROUP_KEY =
+        ResourceKey.create(Registries.CREATIVE_MODE_TAB, MikuPlushie.id("item_group"));
+	public static final CreativeModeTab MIKU_GROUP = FabricCreativeModeTab.builder()
 		.icon(() -> new ItemStack(ModBlocks.MIKU_PLUSH))
-		.displayName(Text.translatable("item.group.miku_plushies"))
+		.title(Component.translatable("item.group.miku_plushies"))
+		.displayItems((parameters, output) -> {
+            REGULAR_ITEMS.forEach(output::accept);
+            PLUSH_ITEMS.forEach(output::accept);
+            PICKAXE_ITEMS.forEach(output::accept);
+        })
 		.build();
 
 
     //REGISTER REGULAR ITEMS
 	public static final Item CANUDINHO =
-        register(new Item(new Item.Settings().rarity(Rarity.RARE)), "canudinho");
+        register("canudinho", Item::new, new Item.Properties().rarity(Rarity.RARE));
 	public static final Item BAGUETTE =
-        register(new Item(new Item.Settings().food(ModFoodComponents.BAGUETTE)), "baguette");
+        register("baguette", Item::new, new Item.Properties().food(ModFoodComponents.BAGUETTE));
 
+    //SEEDS USE THEIR OWN ITEM NAME INSTEAD OF THE CROP BLOCK NAME
     public static final Item LEEK_SEEDS =
-        register(new AliasedBlockItem(ModBlocks.LEEK_CROP, new Item.Settings()), "leek_seeds");
+        register("leek_seeds", settings -> new BlockItem(ModBlocks.LEEK_CROP, settings), new Item.Properties().useItemDescriptionPrefix());
     public static final Item LEEK =
-        register(new Item(new Item.Settings().food(ModFoodComponents.LEEK)), "leek");
+        register("leek", Item::new, new Item.Properties().food(ModFoodComponents.LEEK));
 
     public static final Item AKITA_NERU_PHONE =
-        register(new Item(new Item.Settings()), "akita_neru_phone");
+        register("akita_neru_phone", Item::new, new Item.Properties());
 
     public static final Item VOCALOID_HEART =
-        register(new Item(new Item.Settings()), "vocaloid_heart");
+        register("vocaloid_heart", Item::new, new Item.Properties());
 
     //REGISTER TETO PICKAXE ITEMS
     public static final Item TETO_PICKAXE = registerPickaxe("teto_pickaxe");
@@ -66,63 +80,58 @@ public class ModItems {
     public static final Item TETO_PICKAXE_PPPP = registerPickaxe("teto_pickaxe_pppp");
 
     //REGISTER PLUSH ITEMS
-    public static Item registerPlush(String name) {
-        Block plushBlock = null;
-        for (int block = 0; block < ModBlocks.PLUSH_BLOCKS.size(); block++) {
-            //MATCH ITEM TO THE RIGHT BLOCK
-            Block registeredPlushBlock = ModBlocks.PLUSH_BLOCKS.get(block);
-            if (ModUtil.getBlockIdFromBlock(registeredPlushBlock).matches(name)){
-                plushBlock = registeredPlushBlock;
-            }
-        }
-        return register(new MikuPlushieBlockItem(plushBlock, new Item.Settings()), name);
+    public static Item registerPlush(Block plushBlock) {
+        String name = ModUtil.getBlockIdFromBlock(plushBlock);
+
+        //PLUSHIES CAN BE WORN ON THE HEAD, THE EQUIP SOUND IS PART OF THE EQUIPPABLE COMPONENT NOW
+        Holder<SoundEvent> equipSound = plushBlock.equals(ModBlocks.KONOHA_PLUSH)
+            ? BuiltInRegistries.SOUND_EVENT.wrapAsHolder(ModUtil.sound(SoundEvents.WOOL_PLACE))
+            : BuiltInRegistries.SOUND_EVENT.wrapAsHolder(ModUtil.getPlushSoundEvent(name, "equip"));
+
+        Item.Properties settings = new Item.Properties()
+            .useBlockDescriptionPrefix()
+            .component(DataComponents.EQUIPPABLE, Equippable.builder(EquipmentSlot.HEAD)
+                .setEquipSound(equipSound)
+                .build());
+
+        return register(name, props -> new MikuPlushieBlockItem(plushBlock, props), settings);
     }
 
     //REGISTER PICKAXES HELPER
     public static Item registerPickaxe(String name) {
-        return register(new PickaxeItem(PlushToolMaterial.PLUSH_TOOL_MATERIAL, new Item.Settings().attributeModifiers(
-                PickaxeItem.createAttributeModifiers(
-                    PlushToolMaterial.PLUSH_TOOL_MATERIAL, 1f, -2.8F))), name);
+        return register(name, Item::new, new Item.Properties()
+            .pickaxe(PlushToolMaterial.PLUSH_TOOL_MATERIAL, 1f, -2.8F));
     }
 
     //REGISTER NORMAL ITEM
-	public static Item register(Item item, String id) {
-		Identifier itemID = Identifier.of(MikuPlushie.MOD_ID, id);
-        Item register = Registry.register(Registries.ITEM, itemID, item);
-        String itemName = ModUtil.getBlockIdFromItem(item);
+	public static Item register(String id, Function<Item.Properties, Item> itemFactory, Item.Properties settings) {
+        //ITEM PROPERTIES NEED THE REGISTRY KEY SINCE 1.21.2
+		ResourceKey<Item> itemKey = ResourceKey.create(Registries.ITEM, MikuPlushie.id(id));
+        Item item = Registry.register(BuiltInRegistries.ITEM, itemKey, itemFactory.apply(settings.setId(itemKey)));
 
         //ADD TETO PICKAXES TO THE PICKAXES LIST
-        if (itemName.contains("pickaxe")){
+        if (id.contains("pickaxe")){
             PICKAXE_ITEMS.add(item);
         }
         //ADD REGULAR ITEMS TOO
-        else if (!itemName.contains("plush")){
+        else if (!id.contains("plush")){
             REGULAR_ITEMS.add(item);
         }
 
-        return register;
+        return item;
 	}
 
 
 	public static void initialize() {
         MikuPlushie.LOGGER.info("Registering " + MikuPlushie.MOD_ID + " Items");
 
-        //REGISTER ITEM GROUP
-		Registry.register(Registries.ITEM_GROUP, MIKU_GROUP_KEY, MIKU_GROUP);
+        //REGISTER CREATIVE TAB
+		Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, MIKU_GROUP_KEY, MIKU_GROUP);
 
         //CREATE A ITEM FOR EVERY PLUSH BLOCK
         for (Block plushblock : ModBlocks.PLUSH_BLOCKS) {
-            Item plushItem = registerPlush(ModUtil.getBlockIdFromBlock(plushblock));
+            Item plushItem = registerPlush(plushblock);
             PLUSH_ITEMS.add(plushItem);
         }
-
-        //POPULATE ITEM GROUP
-		ItemGroupEvents.modifyEntriesEvent(MIKU_GROUP_KEY).register(itemGroup -> {
-
-            REGULAR_ITEMS.forEach(itemGroup::add);
-            PLUSH_ITEMS.forEach(itemGroup::add);
-            PICKAXE_ITEMS.forEach(itemGroup::add);
-
-		});
 	}
 }
