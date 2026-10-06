@@ -116,7 +116,9 @@ public class AbstractPlushEntity extends TamableAnimal implements GeoEntity {
         return Mob.createMobAttributes()
             .add(Attributes.MAX_HEALTH, 20.0F)
             .add(Attributes.MOVEMENT_SPEED, 0.3F)
-            .add(Attributes.ATTACK_DAMAGE, 2.0F);
+            .add(Attributes.ATTACK_DAMAGE, 2.0F)
+            //REQUIRED BY THE TEMPT GOAL SINCE 1.21.5 (SAME VALUE AS VANILLA ANIMALS)
+            .add(Attributes.TEMPT_RANGE, 10.0F);
     }
 
     //ENTITY POSES
