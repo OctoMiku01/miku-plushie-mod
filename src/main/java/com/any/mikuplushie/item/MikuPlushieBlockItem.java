@@ -3,6 +3,7 @@ package com.any.mikuplushie.item;
 import com.any.mikuplushie.MikuPlushie;
 import com.any.mikuplushie.datagen.ModItemTagProvider;
 import com.any.mikuplushie.util.ModUtil;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.BlockItem;
@@ -22,7 +23,8 @@ public class MikuPlushieBlockItem extends BlockItem {
 
 	@Override
 	public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay display, Consumer<Component> tooltip, TooltipFlag flag) {
-		tooltip.accept(Component.translatable("item." + MikuPlushie.MOD_ID + "." + ModUtil.getBlockIdFromItem(stack.getItem()) + ".tooltip"));
+		//THE LANG KEYS USE THE FULL ITEM ID, E.G. item.miku-plushie.miku-plushie:miku_plush.tooltip
+		tooltip.accept(Component.translatable("item." + MikuPlushie.MOD_ID + "." + BuiltInRegistries.ITEM.getKey(stack.getItem()) + ".tooltip"));
 		super.appendHoverText(stack, context, display, tooltip, flag);
 	}
 
