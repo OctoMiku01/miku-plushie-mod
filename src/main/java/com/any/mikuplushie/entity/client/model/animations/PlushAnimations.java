@@ -8,6 +8,10 @@ import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 /**
  * Procedural plush animations. With GeckoLib 5 the bones are adjusted through {@link BoneSnapshots}
  * and all entity data comes from the render state, see {@link AbstractPlushRender#addRenderData}.
+ * <p>
+ * GeckoLib 5 flipped the X and Y rotation axes of bone snapshots compared to GeckoLib 4
+ * (see {@code DefaultAnimations.hardcodedHeadRotation}), so every X/Y rotation is negated
+ * here to keep the 1.21.1 look. Z rotations are unchanged.
  */
 public class PlushAnimations {
 
@@ -33,26 +37,26 @@ public class PlushAnimations {
         });
 
         //DISABLE ARM ANIMATIONS WHEN DANCING AND ATTACKING
-        bones.ifPresent("left_arm_offset", leftArm -> leftArm.setRotX(dancingOrAttacking ? 0 :
-            (float) Math.sin(limbSwing * swingSpeed) * (swingAmm * 50 * toRad) - (healthBend * toRad)));
-        bones.ifPresent("right_arm_offset", rightArm -> rightArm.setRotX(dancingOrAttacking ? 0 :
-            (float) Math.sin(limbSwing * swingSpeed) * (swingAmm * -50 * toRad) - (healthBend * toRad)));
+        bones.ifPresent("left_arm_offset", leftArm -> leftArm.setRotX(-(dancingOrAttacking ? 0 :
+            (float) Math.sin(limbSwing * swingSpeed) * (swingAmm * 50 * toRad) - (healthBend * toRad))));
+        bones.ifPresent("right_arm_offset", rightArm -> rightArm.setRotX(-(dancingOrAttacking ? 0 :
+            (float) Math.sin(limbSwing * swingSpeed) * (swingAmm * -50 * toRad) - (healthBend * toRad))));
 
         //LEGS ANIMATION
         bones.ifPresent("left_leg_offset", leftLeg ->
-            leftLeg.setRotX((float) Math.sin(limbSwing * swingSpeed) * (swingAmm * -50 * toRad)));
+            leftLeg.setRotX(-((float) Math.sin(limbSwing * swingSpeed) * (swingAmm * -50 * toRad))));
         bones.ifPresent("right_leg_offset", rightLeg ->
-            rightLeg.setRotX((float) Math.sin(limbSwing * swingSpeed) * (swingAmm * 50 * toRad)));
+            rightLeg.setRotX(-((float) Math.sin(limbSwing * swingSpeed) * (swingAmm * 50 * toRad))));
 
         //BODY ANIMATION
-        bones.ifPresent("body_offset", body -> body.setRotX(healthBend * toRad));
+        bones.ifPresent("body_offset", body -> body.setRotX(-(healthBend * toRad)));
 
         //HEAD ANIM
         float headPitch = state.xRot;
         float headYaw = state.yRot;
         bones.ifPresent("head_offset", head -> {
-            head.setRotX((headPitch - healthBend) * toRad);
-            head.setRotY(headYaw * toRad);
+            head.setRotX(-((headPitch - healthBend) * toRad));
+            head.setRotY(-(headYaw * toRad));
         });
     }
 
@@ -65,7 +69,7 @@ public class PlushAnimations {
         float headPitch = state.xRot;
 
         bones.ifPresent("hair_offset", hair -> {
-            hair.setRotX(-headPitch * ((float) Math.PI / 180F));
+            hair.setRotX(-(-headPitch * ((float) Math.PI / 180F)));
             hair.setRotZ((float) Math.sin(limbSwing * swingSpeed - (45/20F)) * (swingAmm * -10 * toRad));
         });
     }
