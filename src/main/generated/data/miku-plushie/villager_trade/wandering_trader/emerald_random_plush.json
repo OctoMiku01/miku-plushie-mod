@@ -1,0 +1,983 @@
+{
+  "given_item_modifiers": [
+    {
+      "conditions": [
+        {
+          "chance": 0.5,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:miku_plush_br_ba"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.33333334,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:miku_plush_bik"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.25,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:miku_plush_br_beach"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.2,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:miku_plush_br_braid"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.16666667,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:miku_plush_br_ba_drum"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.14285715,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:miku_plush_br_pa"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.125,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:miku_plush_br_sp"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.11111111,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:miku_plush_br_mg"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.1,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:miku_plush_br_brown_bro"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.09090909,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:miku_plush_br_electrician"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.083333336,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:miku_plush_br_bik_orange"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.07692308,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:miku_plush_br_am"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.071428575,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:miku_plush_br_fut_fla"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.06666667,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:miku_plush_br_fut_cam"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.0625,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:miku_plush_br_go"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.05882353,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:miku_plush_br_school_pe"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.055555556,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:miku_plush_br_fut_crvg"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.05263158,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:miku_plush_br_rs"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.05,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:miku_plush_frog"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.04761905,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:miku_plush_mushroom"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.045454547,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:miku_plush_senbonzakura"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.04347826,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:miku_plush_uraotomelovers"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.041666668,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:miku_plush_personadancing"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.04,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:miku_plush_helloplanet"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.03846154,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:miku_plush_hachune"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.037037037,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:miku_plush_zatsune"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.035714287,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:miku_plush_infinity"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.03448276,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:miku_plush_vampire"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.033333335,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:miku_plush_werewoman"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.032258064,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:miku_plush_jason"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.03125,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:miku_plush_michael_myers"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.030303031,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:miku_plush_pumpkin"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.029411765,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:miku_plush_ghostface"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.028571429,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:miku_plush_frankenstein"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.027777778,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:miku_plush_mummy"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.027027028,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:miku_plush_ghost"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.02631579,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:miku_plush_patati"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.025641026,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:miku_plush_patata"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.025,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:miku_plush_devil"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.024390243,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:miku_plush_witch"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.023809524,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:miku_plush_santa"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.023255814,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:miku_plush_reindeer"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.022727273,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:miku_plush_santa_elf"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.022222223,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:miku_plush_xmas_tree"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.02173913,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:aiko_plush"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.021276595,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:teto_plush"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.020833334,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:akita_neru_plush"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.020408163,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:miku_plush"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.02,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:rin_plush"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.019607844,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:len_plush"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.01923077,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:miku_plush_sonic_crossworlds"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.018867925,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:miku_plush_fortnite_neko"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.018518519,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:miku_plush_v4"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.018181818,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:miku_plush_mesmerizer"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.017857144,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:teto_plush_mesmerizer"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.01754386,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:miku_plush_sonic"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.01724138,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:teto_plush_shadow"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.016949153,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:akita_neru_plush_tails"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.016666668,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:teto_plush_birdbrain"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.016393442,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:miku_plush_digital_stars_2025"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.016129032,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:miku_plush_rotten_girl"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.015873017,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:teto_plush_regret_rock"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.015625,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:miku_plush_psycho_mode"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.015384615,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:miku_plush_dont_believe_in_t"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.015151516,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:teto_plush_dont_believe_in_t"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.014925373,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:teto_plush_liar_dancer"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.014705882,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:miku_plush_static"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.014492754,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:miku_plush_mochimochi"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.014285714,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:teto_plush_whatchacallitsname"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.014084507,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:miku_plush_monitoring"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.013888889,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:konoha_plush"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.01369863,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:luka_plush"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.013513514,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:teto_plush_some_more_of_that_song"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.013333334,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:teto_plush_lobster"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.013157895,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:miku_plush_hollow_knight"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.012987013,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:miku_plush_hornet"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.012820513,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:teto_plush_synthv"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.012658228,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:miku_plush_world_is_mine"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.0125,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:miku_plush_rolling_girl"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.012345679,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:teto_plush_spoken_for"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.0121951215,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:meiko_plush"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.012048192,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:meiko_plush_v3"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.011904762,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:meiko_plush_v4"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.011764706,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:gumi_plush"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.011627907,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:gumi_plush_v3"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.011494253,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:gumi_plush_v4"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.011363637,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:gumi_plush_v6"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.011235955,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:miku_plush_deep_sea_girl"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.011111111,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:miku_plush_lucario_z"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.010989011,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:teto_plush_pppp"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.010869565,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:miku_plush_pppp"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.010752688,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:teto_plush_shrimp"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.010638298,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:miku_plush_link"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.010526316,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:miku_plush_renaissance"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.010416667,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:kaito_plush"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.010309278,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:kaito_plush_v3"
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.010204081,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "function": "minecraft:set_item",
+      "item": "miku-plushie:kaito_plush_v4"
+    }
+  ],
+  "gives": {
+    "id": "miku-plushie:miku_plush_br"
+  },
+  "max_uses": 6,
+  "reputation_discount": 0.02,
+  "wants": {
+    "id": "minecraft:emerald"
+  },
+  "xp": 2
+}
