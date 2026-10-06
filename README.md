@@ -1,3 +1,13 @@
+> [!IMPORTANT]
+> **Unofficial fork, mainly intended for private use.**
+> This repository is a personal fork of [4nyNoob/miku-plushie-mod](https://github.com/4nyNoob/miku-plushie-mod) and is mainly maintained for private use.
+> It is not an official release channel and comes without support or guarantees. For official downloads, updates and bug reports, please use the original project.
+
+> [!NOTE]
+> **AI disclaimer:** The port of this mod to Minecraft 26.2 (branch `fabric-26.2`) was created with the help of AI (Claude by Anthropic).
+> The code was generated and adjusted with AI assistance and has been tested only to a limited extent, so it may contain bugs or behave differently from the original mod.
+> All original assets, models, textures, sounds and the mod concept belong to the original author, 4nyNoob.
+
 ## Looking for volunteers on porting the mod to version 26.1/NeoForge, please feeel free to open a PR
 
 [//]: # (<!--suppress HtmlDeprecatedAttribute -->)
