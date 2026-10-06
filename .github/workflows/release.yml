@@ -1,0 +1,34 @@
+# Builds the mod and publishes a GitHub release with the jar when a version tag is pushed.
+
+name: release
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v6
+      - name: validate gradle wrapper
+        uses: gradle/actions/wrapper-validation@v6
+      - name: setup jdk
+        uses: actions/setup-java@v5
+        with:
+          java-version: '25'
+          distribution: 'microsoft'
+      - name: make gradle wrapper executable
+        run: chmod +x ./gradlew
+      - name: build
+        run: ./gradlew build
+      - name: publish release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: Miku Plushies ${{ github.ref_name }}
+          body_path: .github/release-notes.md
+          files: build/libs/miku-plushie-*[0-9].jar
