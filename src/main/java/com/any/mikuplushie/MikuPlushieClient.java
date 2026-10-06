@@ -21,7 +21,10 @@ public class MikuPlushieClient implements ClientModInitializer {
         //SO THE OLD BlockRenderLayerMap REGISTRATION IS NOT NEEDED ANYMORE
 
         //GLIB QUERY
-        MathParser.setVariable("query.miku.is_game", controllerState -> 90 / Math.PI);
+        //THE BLOCKBENCH FILES DEFINE "q.miku.is_game = math.pi/180" BECAUSE math.atan RETURNS DEGREES THERE,
+        //GECKOLIB'S math.atan ALREADY RETURNS RADIANS, SO THE FACTOR IS 1 IN GAME (90 / PI MADE THE ATTACK
+        //ANIMATIONS SPIN THE BODY UP TO ~700 DEGREES)
+        MathParser.setVariable("query.miku.is_game", controllerState -> 1);
 
         //ENTITIES RENDERERS
         for (EntityType<? extends AbstractPlushEntity> plushEntity : ModEntities.PLUSH_ENTITIES) {
