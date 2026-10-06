@@ -10,6 +10,7 @@ Unofficial port of [4nyNoob/miku-plushie-mod](https://github.com/4nyNoob/miku-pl
 - Java 25
 
 ### Changes
+- Fixed plushies looking down instead of up at the player (head, body and limb rotations were mirrored with GeckoLib 5)
 - Fixed worlds failing to load/create ("Failed to load registries") because of outdated leek world generation data in 2.0.1
 - Ported to Minecraft 26.2 (Mojang mappings, Fabric Loom 1.18, GeckoLib 5)
 - Villager and wandering trader trades are now data driven
