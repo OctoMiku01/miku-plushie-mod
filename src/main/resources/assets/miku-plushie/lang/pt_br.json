@@ -297,5 +297,9 @@
   "sound.kaito-plushie.oie": "Kaito: Oie",
   "sound.kaito-plushie.dor": "Kaito: Dor",
   "sound.kaito-plushie.bye": "Kaito: Tchau",
-  "sound.kaito-plushie.equip": "Kaito: Equipado"
+  "sound.kaito-plushie.equip": "Kaito: Equipado",
+
+  "entity.miku-plushie.mode.follow": "%s está te seguindo",
+  "entity.miku-plushie.mode.sit": "%s está sentada",
+  "entity.miku-plushie.mode.wander": "%s está passeando por aí"
 }
