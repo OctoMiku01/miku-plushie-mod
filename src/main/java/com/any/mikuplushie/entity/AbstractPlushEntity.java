@@ -426,8 +426,15 @@ public class AbstractPlushEntity extends TamableAnimal implements GeoEntity {
                 return false;
             }
             //WALK BACK RIGHT AWAY IF OUTSIDE THE AREA (E.G. AFTER A FIGHT)
-            if (!this.plush.isInsideWanderArea(this.plush.position())) {
-                this.triggerImmediately();
+            BlockPos center = this.plush.getWanderCenter();
+            if (center != null && !this.plush.isInsideWanderArea(this.plush.position())) {
+                if (this.plush.getNavigation().isDone()) {
+                    Vec3 target = LandRandomPos.getPosTowards(this.plush, 10, 7, Vec3.atBottomCenterOf(center));
+                    if (target != null) {
+                        this.plush.getNavigation().moveTo(target.x(), target.y(), target.z(), 0.8F);
+                    }
+                }
+                return false;
             }
             return super.canUse();
         }
