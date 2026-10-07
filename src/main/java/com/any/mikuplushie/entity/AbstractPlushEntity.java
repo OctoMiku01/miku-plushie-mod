@@ -18,10 +18,12 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.ItemTags;
@@ -43,6 +45,8 @@ import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.SitWhenOrderedToGoal;
 import net.minecraft.world.entity.ai.goal.TemptGoal;
+import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
+import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.OwnerHurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.OwnerHurtTargetGoal;
@@ -56,6 +60,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
+import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
 import java.util.List;
@@ -65,6 +70,12 @@ public class AbstractPlushEntity extends TamableAnimal implements GeoEntity {
 
     private static final EntityDataAccessor<Integer> SPAWN_AGE = SynchedEntityData.defineId(AbstractPlushEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(AbstractPlushEntity.class, EntityDataSerializers.INT);
+
+    //WANDER MODE (FOLLOW -> SIT -> WANDER -> FOLLOW)
+    private boolean wandering;
+    //CENTER OF THE WANDER AREA AND MAX DISTANCE (IN BLOCKS) FROM IT
+    public static final int WANDER_RADIUS = 25;
+    private @Nullable BlockPos wanderCenter;
 
     //DANCE GLOBALS
     boolean songPlaying;
@@ -92,8 +103,21 @@ public class AbstractPlushEntity extends TamableAnimal implements GeoEntity {
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new SitWhenOrderedToGoal(this));
         this.goalSelector.addGoal(2, new MikuDelayedAttackGoal(this, 1.5F, true));
-        this.goalSelector.addGoal(4, new FollowOwnerGoal(this,1.0F, 5F, 1F));
+        //FOLLOW OWNER (DISABLED WHILE WANDERING)
+        this.goalSelector.addGoal(4, new FollowOwnerGoal(this,1.0F, 5F, 1F) {
+            @Override
+            public boolean canUse() {
+                return !AbstractPlushEntity.this.isWandering() && super.canUse();
+            }
+
+            @Override
+            public boolean canContinueToUse() {
+                return !AbstractPlushEntity.this.isWandering() && super.canContinueToUse();
+            }
+        });
         this.goalSelector.addGoal(6, new TemptGoal(this, 1.5, Ingredient.of(ModItems.LEEK), false));
+        //WALK AROUND FREELY (ONLY IN WANDER MODE, WITHIN WANDER_RADIUS OF THE START POINT)
+        this.goalSelector.addGoal(7, new WanderAroundCenterGoal(this));
         this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, AbstractPlushEntity.class, 8F));
         this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 8F));
         this.goalSelector.addGoal(9, new RandomLookAroundGoal(this));
@@ -294,14 +318,30 @@ public class AbstractPlushEntity extends TamableAnimal implements GeoEntity {
                     return InteractionResult.SUCCESS;
                 }
 
-                //TOGGLE SITTING POSE
+                //CYCLE MODE: FOLLOW -> SIT -> WANDER -> FOLLOW
                 else {
-                    this.setOrderedToSit(!this.isOrderedToSit());
-                    this.setInSittingPose(!this.isInSittingPose());
-                    if (this.isInSittingPose()) {
-                        this.setPose(Pose.SITTING);
+                    String mode;
+                    if (this.isOrderedToSit()) {
+                        //SIT -> WANDER
+                        this.setSitting(false);
+                        this.setWandering(true);
+                        mode = "wander";
+                    } else if (this.isWandering()) {
+                        //WANDER -> FOLLOW
+                        this.setWandering(false);
+                        mode = "follow";
                     } else {
-                        this.setPose(Pose.STANDING);
+                        //FOLLOW -> SIT
+                        this.setSitting(true);
+                        mode = "sit";
+                    }
+                    this.getNavigation().stop();
+
+                    //SHOW THE NEW MODE ABOVE THE HOTBAR
+                    if (player instanceof ServerPlayer serverPlayer) {
+                        serverPlayer.sendSystemMessage(Component.translatable(
+                            "entity.miku-plushie.mode." + mode, this.getDisplayName()
+                        ), true);
                     }
                     return InteractionResult.SUCCESS;
                 }
@@ -326,6 +366,104 @@ public class AbstractPlushEntity extends TamableAnimal implements GeoEntity {
         //OTHER PLAYER INTERACTION
         else {
             return super.mobInteract(player, hand);
+        }
+    }
+
+    //SIT / STAND UP
+    protected void setSitting(boolean sitting) {
+        this.setOrderedToSit(sitting);
+        this.setInSittingPose(sitting);
+        this.setPose(sitting ? Pose.SITTING : Pose.STANDING);
+    }
+
+    //WANDER MODE GETTER AND SETTER
+    public boolean isWandering() {
+        return this.wandering;
+    }
+
+    public void setWandering(boolean wandering) {
+        this.wandering = wandering;
+        //REMEMBER WHERE WANDERING STARTED
+        if (wandering) {
+            if (this.wanderCenter == null) {
+                this.wanderCenter = this.blockPosition();
+            }
+        } else {
+            this.wanderCenter = null;
+        }
+    }
+
+    public @Nullable BlockPos getWanderCenter() {
+        return this.wanderCenter;
+    }
+
+    //HORIZONTAL DISTANCE CHECK AGAINST THE WANDER AREA
+    public boolean isInsideWanderArea(Vec3 pos) {
+        if (this.wanderCenter == null) {
+            return true;
+        }
+        double dx = pos.x() - (this.wanderCenter.getX() + 0.5D);
+        double dz = pos.z() - (this.wanderCenter.getZ() + 0.5D);
+        return dx * dx + dz * dz <= (double) WANDER_RADIUS * WANDER_RADIUS;
+    }
+
+    //RANDOM STROLL THAT STAYS WITHIN WANDER_RADIUS BLOCKS OF THE WANDER CENTER
+    static class WanderAroundCenterGoal extends WaterAvoidingRandomStrollGoal {
+        private final AbstractPlushEntity plush;
+
+        WanderAroundCenterGoal(AbstractPlushEntity plush) {
+            super(plush, 0.8F);
+            this.plush = plush;
+        }
+
+        private boolean isActive() {
+            return this.plush.isWandering() && !this.plush.isOrderedToSit();
+        }
+
+        @Override
+        public boolean canUse() {
+            if (!this.isActive()) {
+                return false;
+            }
+            //WALK BACK RIGHT AWAY IF OUTSIDE THE AREA (E.G. AFTER A FIGHT)
+            BlockPos center = this.plush.getWanderCenter();
+            if (center != null && !this.plush.isInsideWanderArea(this.plush.position())) {
+                if (this.plush.getNavigation().isDone()) {
+                    Vec3 target = LandRandomPos.getPosTowards(this.plush, 10, 7, Vec3.atBottomCenterOf(center));
+                    if (target != null) {
+                        this.plush.getNavigation().moveTo(target.x(), target.y(), target.z(), 0.8F);
+                    }
+                }
+                return false;
+            }
+            return super.canUse();
+        }
+
+        @Override
+        public boolean canContinueToUse() {
+            return this.isActive() && super.canContinueToUse();
+        }
+
+        @Override
+        protected @Nullable Vec3 getPosition() {
+            BlockPos center = this.plush.getWanderCenter();
+            if (center == null) {
+                return super.getPosition();
+            }
+
+            //OUTSIDE THE AREA: HEAD BACK TOWARDS THE CENTER
+            if (!this.plush.isInsideWanderArea(this.plush.position())) {
+                return LandRandomPos.getPosTowards(this.plush, 10, 7, Vec3.atBottomCenterOf(center));
+            }
+
+            //INSIDE THE AREA: PICK A RANDOM TARGET THAT STAYS INSIDE
+            for (int attempt = 0; attempt < 10; attempt++) {
+                Vec3 target = super.getPosition();
+                if (target != null && this.plush.isInsideWanderArea(target)) {
+                    return target;
+                }
+            }
+            return null;
         }
     }
 
@@ -426,6 +564,15 @@ public class AbstractPlushEntity extends TamableAnimal implements GeoEntity {
         super.readAdditionalSaveData(input);
         this.entityData.set(SPAWN_AGE, input.getIntOr("SpawnAge", 0));
         this.entityData.set(this.getVariantDataTracker(), input.getIntOr("Variant", 0));
+        this.setWandering(input.getBooleanOr("Wandering", false));
+        if (this.isWandering()) {
+            BlockPos current = this.blockPosition();
+            this.wanderCenter = new BlockPos(
+                input.getIntOr("WanderCenterX", current.getX()),
+                input.getIntOr("WanderCenterY", current.getY()),
+                input.getIntOr("WanderCenterZ", current.getZ())
+            );
+        }
     }
 
     @Override
@@ -438,6 +585,12 @@ public class AbstractPlushEntity extends TamableAnimal implements GeoEntity {
         super.addAdditionalSaveData(output);
         output.putInt("SpawnAge", Math.min(this.tickCount, 11));
         output.putInt("Variant", this.getTrackedVariant());
+        output.putBoolean("Wandering", this.isWandering());
+        if (this.wanderCenter != null) {
+            output.putInt("WanderCenterX", this.wanderCenter.getX());
+            output.putInt("WanderCenterY", this.wanderCenter.getY());
+            output.putInt("WanderCenterZ", this.wanderCenter.getZ());
+        }
     }
 
     //NO CHILD

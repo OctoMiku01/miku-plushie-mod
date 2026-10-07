@@ -297,5 +297,9 @@
   "sound.kaito-plushie.oie": "KAITO: 嗨",
   "sound.kaito-plushie.dor": "KAITO: 好痛",
   "sound.kaito-plushie.bye": "KAITO: 拜拜",
-  "sound.kaito-plushie.equip": "KAITO: 装备中"
+  "sound.kaito-plushie.equip": "KAITO: 装备中",
+
+  "entity.miku-plushie.mode.follow": "%s 正在跟随你",
+  "entity.miku-plushie.mode.sit": "%s 正在坐下",
+  "entity.miku-plushie.mode.wander": "%s 正在四处闲逛"
 }
