@@ -1,4 +1,4 @@
-## Miku Plushies 2.0.4 for Minecraft 26.2 (Fabric)
+## Miku Plushies 2.0.5 for Minecraft 26.2 (Fabric)
 
 Independent fork of [4nyNoob/miku-plushie-mod](https://github.com/4nyNoob/miku-plushie-mod) for Minecraft 26.2, developed separately from the original project. Please report problems with this fork [here](https://github.com/OctoMiku01/miku-plushie-mod/issues), not in the original project.
 
@@ -10,6 +10,9 @@ Independent fork of [4nyNoob/miku-plushie-mod](https://github.com/4nyNoob/miku-p
 - Java 25
 
 ### Changes
+- This fork is now developed independently of the original project: the mod links this repository as homepage, sources and issue tracker, so please report problems with this fork [here](https://github.com/OctoMiku01/miku-plushie-mod/issues). Tools that read the mod's metadata, like mod list synchronizers, find its releases this way.
+
+### Previous changes (2.0.4)
 - **New: Wander mode.** Right-clicking a tamed plushie now cycles *Follow → Sit → Wander*. In wander mode the plushie strolls around freely within 25 blocks of the spot where the mode was activated and walks back if it gets too far away. The current mode is shown above the hotbar.
 - Added a German translation for the mode messages
 
