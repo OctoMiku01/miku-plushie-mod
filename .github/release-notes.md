@@ -1,6 +1,6 @@
 ## Miku Plushies 2.0.4 for Minecraft 26.2 (Fabric)
 
-Unofficial port of [4nyNoob/miku-plushie-mod](https://github.com/4nyNoob/miku-plushie-mod) to Minecraft 26.2. This fork is mainly intended for private use; for official releases and support please use the original project.
+Independent fork of [4nyNoob/miku-plushie-mod](https://github.com/4nyNoob/miku-plushie-mod) for Minecraft 26.2, developed separately from the original project. Please report problems with this fork [here](https://github.com/OctoMiku01/miku-plushie-mod/issues), not in the original project.
 
 ### Requirements
 - Minecraft 26.2

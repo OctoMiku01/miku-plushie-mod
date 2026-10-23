@@ -1,14 +1,12 @@
 > [!IMPORTANT]
-> **Unofficial fork, mainly intended for private use.**
-> This repository is a personal fork of [4nyNoob/miku-plushie-mod](https://github.com/4nyNoob/miku-plushie-mod) and is mainly maintained for private use.
-> It is not an official release channel and comes without support or guarantees. For official downloads, updates and bug reports, please use the original project.
+> **Independent fork of [4nyNoob/miku-plushie-mod](https://github.com/4nyNoob/miku-plushie-mod).**
+> This fork is developed separately from the original project and has its own features (like the wander mode) and releases.
+> It is not affiliated with or supported by the original author: please report problems with this fork [here](https://github.com/OctoMiku01/miku-plushie-mod/issues), not in the original project.
 
 > [!NOTE]
 > **AI disclaimer:** The port of this mod to Minecraft 26.2 (branch `fabric-26.2`) was created with the help of AI (Claude by Anthropic).
 > The code was generated and adjusted with AI assistance and has been tested only to a limited extent, so it may contain bugs or behave differently from the original mod.
 > All original assets, models, textures, sounds and the mod concept belong to the original author, 4nyNoob.
-
-## Looking for volunteers on porting the mod to version 26.1/NeoForge, please feeel free to open a PR
 
 [//]: # (<!--suppress HtmlDeprecatedAttribute -->)
 <h1 style="text-align:center">
@@ -29,14 +27,8 @@ Hatsune Miku Just Arrived in Minecraft
 
 [//]: # (Download Links)
 <p style="text-align:center">
-  <a href="https://github.com/4nyNoob/miku-plushie-mod/releases">
+  <a href="https://github.com/OctoMiku01/miku-plushie-mod/releases">
     <img alt="github" height="40" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact/available/github_vector.svg">
-  </a>
-  <a href="https://modrinth.com/mod/miku-plushies">
-    <img alt="modrinth" height="40" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact/available/modrinth_vector.svg">
-  </a>
-  <a href="https://www.curseforge.com/minecraft/mc-mods/miku-plushies">
-    <img alt="curseforge" height="40" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact/available/curseforge_vector.svg">
   </a>
 </p>
 
@@ -44,7 +36,7 @@ Hatsune Miku Just Arrived in Minecraft
 <h3 style="text-align:justify">
 Craft as many shears as your heart desire and start building your collection of Vocaloids.
 90+ designs from 10 different Vocaloids and still counting. 
-You can suggest new plushies via <a href="https://github.com/4nyNoob/miku-plushie-mod/issues/new?template=new_plush.yml">GitHub Issues</a> or contact me on <a href="https://bsky.app/profile/4ny.bsky.social">Bluesky</a> <br> 
+Bugs and ideas for this fork go to its <a href="https://github.com/OctoMiku01/miku-plushie-mod/issues">GitHub Issues</a> <br> 
 </h3>
 
 <a style="text-align:center" href="https://github.com/4nyNoob/miku-plushie-mod/wiki/Crafting-Recipes#plushies">
@@ -68,10 +60,10 @@ You can suggest new plushies via <a href="https://github.com/4nyNoob/miku-plushi
     <summary>FAQ</summary>
 
 - ### Q: Forge?
-  - A: Use [Sinytra Connector](https://modrinth.com/mod/connector) alongside [Connector Extras](https://modrinth.com/mod/connector-extras). I'm not planning into porting the mod myself, but I'm always open to accepting and supporting porting efforts by the community.
+  - A: This fork is for Fabric only. The original project lists the options for Forge.
 - ### Q: Can I use this on my Modpack?
   - A: Yes! absolutely :D
 
 </details>
 
-If you enjoy what I do, consider supporting me on Ko-fi! https://ko-fi.com/4nynoob
+The plushies, their models, textures and sounds and the idea of the mod are by 4nyNoob: if you enjoy them, consider supporting the original author on Ko-fi! https://ko-fi.com/4nynoob
